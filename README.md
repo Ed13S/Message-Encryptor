@@ -1,1 +1,11 @@
-# Message-Encryptor
+# **[Message-Encryptor](https://message-encryptor.onrender.com)
+EDDIE13S // Terminal Operating GuideWelcome to the V13 Security Node. This system is a browser-based implementation of a One-Time Pad (OTP) encryption protocol, combined with a suite of "hacker" visual tools.
+# 🛡️ Core Encryption Logic
+The system uses the One-Time Pad method, which is mathematically impossible to crack if used correctly.1The Pad: A file containing random numbers (0–25).The Process: Each letter of your message is shifted by the number in the pad ($Letter + Pad = Cipher$).The "Burn": To remain secure, a pad is destroyed immediately after a single use.
+# 🕹️ How to Use the Terminal
+1. Generating & Managing PadsManual Generation: Click GENERATE MANUAL PAD to create a new secret key (e.g., otp0.txt).The List: All ready-to-use keys appear under [ ACTIVE PADS ].Upload: If you have your own pad file, use the UPLOAD button to bring it into the system.2. Encrypting a MessageCopy the name of an active pad (e.g., otp1.txt) into the COMMAND / FILENAME box.Type your secret message into the Payload area.Click ENCRYPT.The system will output the scrambled text. You can now send this text to anyone.3. Decrypting & BurningPaste the scrambled text into the Payload area.Enter the name of the pad used to encrypt it in the COMMAND box.Click DECRYPT & BURN.Result: The original message is revealed, the used pad is moved to the Burned Vault, and a fresh pad is automatically generated to replace it.⚡ Secret "Hacker" CommandsThe terminal responds to specific keyboard inputs in the COMMAND / FILENAME box:admin: Executing this command reveals the Hidden Admin Gate at the bottom of the screen.hack / root: Triggers the Active Firewall Grid (a red laser security overlay).Self-Destruct: Found inside the Admin Gate; triggers a system-wide "Kernel Panic" animation and clears the current session.
+# 📡 System Dashboard Features
+# Live IP Fetcher: 
+Displays your current Public IP address to verify your network identity.Port Scanner: Simulates a live probe of network ports (80, 443, etc.) to monitor node health.Export Core: A specialized tool for developers. It packages the entire visual state of the terminal into a single index.html file for easy deployment to GitHub Pages.
+# 🛠️ Installation for GitHub:
+To host this yourself:Clone the repository.Ensure Python 3.x is installed.Run pip install flask werkzeug.Execute python main.py and navigate to localhost:5000.
