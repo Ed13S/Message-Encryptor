@@ -2,14 +2,13 @@ import secrets
 import os
 import glob
 import shutil
-from flask import Flask, render_template_string, request, jsonify, send_file
-from werkzeug.utils import secure_filename
+from flask import Flask, render_template_string, request, jsonify
 
 app = Flask(__name__)
 ALPHABET = 'abcdefghijklmnopqrstuvwxyz'
 ADMIN_PASSWORD = "admin"
 
-# Replit/Server Folders
+# Render-specific paths (using /tmp if you don't have a persistent disk)
 STORAGE_DIR = os.path.join(os.getcwd(), 'otp_storage')
 BURNED_DIR = os.path.join(os.getcwd(), 'burned_otps')
 
@@ -46,37 +45,32 @@ def index():
             textarea, input { width: 100%; background: #000; color: #00ff41; border: 1px solid #00ff41; padding: 10px; box-sizing: border-box; margin: 5px 0; }
             button { background: #00ff41; color: #000; border: none; padding: 10px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 5px; }
             .burn-btn { background: #ff0000; color: #fff; }
-            .otp-item { display: flex; justify-content: space-between; border-bottom: 1px solid #004400; padding: 5px 0; }
-            .delete-btn { color: #ff0000; cursor: pointer; font-weight: bold; padding: 0 10px; }
+            .otp-item { display: flex; justify-content: space-between; border-bottom: 1px solid #004400; padding: 8px 0; }
+            .delete-btn { color: #ff0000; cursor: pointer; font-weight: bold; padding: 0 10px; border: 1px solid #ff0000; }
             #status { background: #111; padding: 10px; margin-top: 10px; border-left: 3px solid #00ff41; }
         </style>
     </head>
     <body>
         <div class="container">
             <h2>> OTP_CORE_SYSTEM</h2>
-            
             <div class="box">
                 <strong>ACTIVE PADS</strong>
                 <div id="otpList"></div>
                 <button onclick="api('/generate', {length:500})">GENERATE NEW PAD</button>
             </div>
-
             <div class="box">
                 <input type="text" id="fn" placeholder="Pad Filename (otp0.txt)">
                 <textarea id="msg" rows="5" placeholder="Message..."></textarea>
                 <button onclick="run('encrypt')">ENCRYPT</button>
                 <button class="burn-btn" onclick="run('decrypt')">DECRYPT & BURN</button>
             </div>
-
             <div id="status">STATUS: ONLINE</div>
-
             <div class="box" style="border-color: #ff0000;">
                 <strong>ADMIN ACTIONS</strong>
                 <input type="password" id="masterPass" placeholder="Enter 'admin' password">
                 <button class="burn-btn" onclick="vaultAction('/purge')">NUCLEAR PURGE</button>
             </div>
         </div>
-
         <script>
             async function refresh() {
                 const r = await fetch('/list_otps');
@@ -89,7 +83,6 @@ def index():
                     </div>
                 `).join('') || 'EMPTY';
             }
-
             async function api(path, body) {
                 const r = await fetch(path, {
                     method: 'POST',
@@ -101,19 +94,15 @@ def index():
                 if(res.result) document.getElementById('msg').value = res.result;
                 refresh();
             }
-
             function run(type) {
                 api('/'+type, {filename: document.getElementById('fn').value, text: document.getElementById('msg').value});
             }
-
             function vaultAction(path) {
                 api(path, {password: document.getElementById('masterPass').value});
             }
-
             function manualDelete(filename) {
                 api('/delete_single', {filename: filename, password: document.getElementById('masterPass').value});
             }
-
             refresh();
         </script>
     </body>
@@ -158,12 +147,9 @@ def decrypt_route():
             res += ALPHABET[(ALPHABET.index(char) - int(sheet[i])) % 26]
         else: res += char
     
-    # Move to burned folder
     dst = get_path(filename, BURNED_DIR)
     shutil.move(src, dst)
-    # Auto-replenish
     generate_pad_logic()
-    
     return jsonify({"message": f"Decrypted. {filename} burned. New pad created.", "result": res})
 
 @app.route('/delete_single', methods=['POST'])
@@ -186,5 +172,5 @@ def purge():
     return jsonify({"message": "System wiped."})
 
 if __name__ == '__main__':
-    # Using 8080 to avoid Replit port conflicts
-    app.run(host='0.0.0.0', port=8080)
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host='0.0.0.0', port=port)
