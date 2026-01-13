@@ -1,11 +1,43 @@
 # [Message-Encryptor](https://message-encryptor-yvo6.onrender.com)
-EDDIE13S // Terminal Operating GuideWelcome to the V12 Security Node. This system is a browser-based implementation of a One-Time Pad (OTP) encryption protocol, combined with a suite of "hacker" visual tools.
-# 🛡️ Core Encryption Logic
-The system uses the One-Time Pad method, which is mathematically impossible to crack if used correctly.1The Pad: A file containing random numbers (0–25).The Process: Each letter of your message is shifted by the number in the pad ($Letter + Pad = Cipher$).The "Burn": To remain secure, a pad is destroyed immediately after a single use.
-# 🕹️ How to Use the Terminal
-1. Generating & Managing PadsManual Generation: Click GENERATE MANUAL PAD to create a new secret key (e.g., otp0.txt).The List: All ready-to-use keys appear under [ ACTIVE PADS ].Upload: If you have your own pad file, use the UPLOAD button to bring it into the system.2. Encrypting a MessageCopy the name of an active pad (e.g., otp1.txt) into the COMMAND / FILENAME box.Type your secret message into the Payload area.Click ENCRYPT.The system will output the scrambled text. You can now send this text to anyone.3. Decrypting & BurningPaste the scrambled text into the Payload area.Enter the name of the pad used to encrypt it in the COMMAND box.Click DECRYPT & BURN.Result: The original message is revealed, the used pad is moved to the Burned Vault, and a fresh pad is automatically generated to replace it.⚡ Secret "Hacker" CommandsThe terminal responds to specific keyboard inputs in the COMMAND / FILENAME box:admin: Executing this command reveals the Hidden Admin Gate at the bottom of the screen.hack / root: Triggers the Active Firewall Grid (a red laser security overlay).Self-Destruct: Found inside the Admin Gate; triggers a system-wide "Kernel Panic" animation and clears the current session.
-# 📡 System Dashboard Features
-# Live IP Fetcher: 
-Displays your current Public IP address to verify your network identity.Port Scanner: Simulates a live probe of network ports (80, 443, etc.) to monitor node health.Export Core: A specialized tool for developers. It packages the entire visual state of the terminal into a single index.html file for easy deployment to GitHub Pages.
-# 🛠️ Installation for GitHub:
-To host this yourself:Clone the repository.Ensure Python 3.x is installed.Run pip install flask werkzeug.Execute python main.py and navigate to localhost:5000.
+1. Initialization
+When you first open your URL (e.g., https://your-app-name.onrender.com), the system performs a handshake with the server.
+
+Check the Status: Look at the STATUS bar. It should read SYSTEM ONLINE.
+
+Active Pads: If the list says EMPTY, click the GENERATE MANUAL PAD button. You will see otp0.txt appear in the list.
+
+2. Encrypting a Message
+Encryption turns your plain text into scrambled code that can only be read with your specific pad.
+
+Select a Pad: Click on the name of a pad in the ACTIVE PADS list (e.g., otp0.txt). This will automatically fill the "Pad Filename" box.
+
+Enter Content: Type your secret message into the large text area.
+
+Execute: Click the green ENCRYPT button.
+
+Result: The text in the box will change into scrambled characters. Copy this text and send it to your recipient.
+
+3. Decrypting & Burning
+Decryption reverses the process and immediately destroys the key to ensure it can never be used again.
+
+Input Cipher: Paste the scrambled text you received into the text area.
+
+Target Pad: Type in the exact name of the pad used to encrypt it.
+
+Execute: Click the red DECRYPT & BURN button.
+
+Verification: The message will return to plain text, and the pad (otp0.txt) will vanish from the active list and move to the "Burned" vault.
+
+4. Vault Management (Admin Only)
+The red area at the bottom is for high-level file management.
+
+Viewing Burned Pads: Type admin (or your chosen password) into the Master Password box and click VIEW BURNED. A list of used pads will appear.
+
+Restoration: If you accidentally burned a pad, click RESTORE next to the filename in the burned list to move it back to the active section.
+
+Nuclear Purge: Clicking this with the correct password will delete every pad on the server permanently.
+
+5. Moving Files (Upload/Download)
+Download: Click the DL link next to any active pad. This saves the .txt file to your phone or computer. This is vital for backup since Render's free tier resets files occasionally.
+
+Upload: If you have an OTP file from another device, click Choose File, select your .txt pad, and click UPLOAD PAD.
