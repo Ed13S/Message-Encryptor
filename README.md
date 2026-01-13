@@ -1,4 +1,4 @@
-# [Message-Encryptor](https://message-encryptor.onrender.com)
+# [Message-Encryptor](https://message-encryptor-yvo6.onrender.com)
 EDDIE13S // Terminal Operating GuideWelcome to the V13 Security Node. This system is a browser-based implementation of a One-Time Pad (OTP) encryption protocol, combined with a suite of "hacker" visual tools.
 # 🛡️ Core Encryption Logic
 The system uses the One-Time Pad method, which is mathematically impossible to crack if used correctly.1The Pad: A file containing random numbers (0–25).The Process: Each letter of your message is shifted by the number in the pad ($Letter + Pad = Cipher$).The "Burn": To remain secure, a pad is destroyed immediately after a single use.
