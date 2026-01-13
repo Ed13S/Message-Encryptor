@@ -1,5 +1,5 @@
 # [Message-Encryptor](https://message-encryptor-yvo6.onrender.com)
-# 📟 OTP STATION V12 - OPERATIONAL MANUAL
+# 📟 OTP STATION V12
 
 ### **🛑 CRITICAL RULE: THE ONE-TIME PAD PRINCIPLE**
 This system follows strict **One-Time Pad (OTP)** logic. A pad is a unique key. Once a pad is used to **Decrypt**, it is "Burned" (moved to the vault) and should **never be used again**. Re-using a pad makes the encryption breakable.
