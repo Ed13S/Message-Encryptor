@@ -8,7 +8,7 @@ app = Flask(__name__)
 ALPHABET = 'abcdefghijklmnopqrstuvwxyz'
 ADMIN_PASSWORD = "admin"
 
-# Render-specific paths (using /tmp if you don't have a persistent disk)
+# Setup directories
 STORAGE_DIR = os.path.join(os.getcwd(), 'otp_storage')
 BURNED_DIR = os.path.join(os.getcwd(), 'burned_otps')
 
@@ -37,7 +37,7 @@ def index():
     <!DOCTYPE html>
     <html>
     <head>
-        <title>OTP STATION CORE</title>
+        <title>OTP STATION</title>
         <style>
             body { font-family: monospace; background: #050505; color: #00ff41; padding: 20px; }
             .container { max-width: 600px; margin: auto; border: 1px solid #00ff41; padding: 20px; }
@@ -45,14 +45,13 @@ def index():
             textarea, input { width: 100%; background: #000; color: #00ff41; border: 1px solid #00ff41; padding: 10px; box-sizing: border-box; margin: 5px 0; }
             button { background: #00ff41; color: #000; border: none; padding: 10px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 5px; }
             .burn-btn { background: #ff0000; color: #fff; }
-            .otp-item { display: flex; justify-content: space-between; border-bottom: 1px solid #004400; padding: 8px 0; }
-            .delete-btn { color: #ff0000; cursor: pointer; font-weight: bold; padding: 0 10px; border: 1px solid #ff0000; }
+            .otp-item { display: flex; justify-content: space-between; border-bottom: 1px solid #004400; padding: 5px 0; }
             #status { background: #111; padding: 10px; margin-top: 10px; border-left: 3px solid #00ff41; }
         </style>
     </head>
     <body>
         <div class="container">
-            <h2>> OTP_CORE_SYSTEM</h2>
+            <h2>> OTP_SYSTEM_RESTORED</h2>
             <div class="box">
                 <strong>ACTIVE PADS</strong>
                 <div id="otpList"></div>
@@ -65,11 +64,6 @@ def index():
                 <button class="burn-btn" onclick="run('decrypt')">DECRYPT & BURN</button>
             </div>
             <div id="status">STATUS: ONLINE</div>
-            <div class="box" style="border-color: #ff0000;">
-                <strong>ADMIN ACTIONS</strong>
-                <input type="password" id="masterPass" placeholder="Enter 'admin' password">
-                <button class="burn-btn" onclick="vaultAction('/purge')">NUCLEAR PURGE</button>
-            </div>
         </div>
         <script>
             async function refresh() {
@@ -79,7 +73,6 @@ def index():
                 listDiv.innerHTML = d.otps.map(o => `
                     <div class="otp-item">
                         <span onclick="document.getElementById('fn').value='${o}'" style="cursor:pointer">${o}</span>
-                        <span class="delete-btn" onclick="manualDelete('${o}')">X</span>
                     </div>
                 `).join('') || 'EMPTY';
             }
@@ -96,12 +89,6 @@ def index():
             }
             function run(type) {
                 api('/'+type, {filename: document.getElementById('fn').value, text: document.getElementById('msg').value});
-            }
-            function vaultAction(path) {
-                api(path, {password: document.getElementById('masterPass').value});
-            }
-            function manualDelete(filename) {
-                api('/delete_single', {filename: filename, password: document.getElementById('masterPass').value});
             }
             refresh();
         </script>
@@ -149,28 +136,9 @@ def decrypt_route():
     
     dst = get_path(filename, BURNED_DIR)
     shutil.move(src, dst)
-    generate_pad_logic()
-    return jsonify({"message": f"Decrypted. {filename} burned. New pad created.", "result": res})
-
-@app.route('/delete_single', methods=['POST'])
-def delete_single():
-    data = request.get_json(force=True)
-    if data.get('password') != ADMIN_PASSWORD: return jsonify({"error": "Denied"}), 403
-    path = get_path(data.get('filename', ''))
-    if os.path.exists(path):
-        os.remove(path)
-        return jsonify({"message": "Deleted."})
-    return jsonify({"error": "Not found"}), 404
-
-@app.route('/purge', methods=['POST'])
-def purge():
-    data = request.get_json(force=True)
-    if data.get('password') != ADMIN_PASSWORD: return jsonify({"error": "Denied"}), 403
-    for d in [STORAGE_DIR, BURNED_DIR]:
-        for f in glob.glob(os.path.join(d, "*")):
-            os.remove(f)
-    return jsonify({"message": "System wiped."})
+    return jsonify({"message": f"Decrypted. {filename} burned.", "result": res})
 
 if __name__ == '__main__':
+    # This block allows Render to assign the correct port
     port = int(os.environ.get("PORT", 8080))
     app.run(host='0.0.0.0', port=port)
