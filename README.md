@@ -31,7 +31,7 @@ Verification: The message will return to plain text, and the pad (otp0.txt) will
 4. Vault Management (Admin Only)
 The red area at the bottom is for high-level file management.
 
-Viewing Burned Pads: Type admin (or your chosen password) into the Master Password box and click VIEW BURNED. A list of used pads will appear.
+Viewing Burned Pads: Type "admin" into the Master Password box and click VIEW BURNED. A list of used pads will appear.
 
 Restoration: If you accidentally burned a pad, click RESTORE next to the filename in the burned list to move it back to the active section.
 
